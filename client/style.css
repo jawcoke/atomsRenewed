@@ -10,7 +10,6 @@
       background-size: cover;
     }
     .container {
-      margin-left: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,6 +19,7 @@
       border-radius: 15px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       flex-direction: column;
+      position: relative;
     }
     .play-section {
       display: flex;

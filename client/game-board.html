@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atoms Game Board</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <!-- Adjust the path for game-board.js -->
+  <script src="js/game-board.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <h1>Atoms Game</h1>
+    <!-- Game grid and logic will be rendered here using p5.js -->
+    <div id="game-canvas"></div>
+  </div>
+
+  <!-- Ensure the game-board.js file is loaded -->
+  <script src="js/game-board.js"></script>
+</body>
+</html>

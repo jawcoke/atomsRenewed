@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="setup">
+      <h1>Game setup</h1>
+      <p>You might want to read up about game now.... dont be lazy now...</p>
+      <div id="local">
+        <h2>Local play</h2>
+        <p>
+          Number of players:
+          <select id="local-players">
+            <option value="2" selected="selected">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </p>
+        <div id="local-roster">
+          <p>
+            <span></span>
+            <select>
+              <option value="ui">Human</option>
+              <option value="ai">AI</option>
+            </select>
+            Name: <input type="text" size="10" />
+          </p>
+        </div>
+        <p><button id="local-play">Play!</button></p>
+      </div>
+      <div id="multiplayer">
+        <h2>Multiplayer</h2>
+        <p>
+          Number of players:
+          <select id="multiplayer-players">
+            <option value="2" selected="selected">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </p>
+        <p>Game name: <input type="text" size="10" id="multiplayer-game" /></p>
+        <p>Your name: <input type="text" size="10" id="multiplayer-name" /></p>
+        <p><button id="multiplayer-play">Play!</button></p>
+      </div>
+
+      <footer>
+        &copy;
+        <a href="http://github.com.jawcoke/atomsRenewed/">Ondřej Žára</a>,
+        source at <a href="https://github.com/jawcoke/atomsRenewed">GitHub</a>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.EC2_IP }} >> ~/.ssh/known_hosts
+
+    - name: Deploy Application
+      run: |
+        rsync -avz -e "ssh -i ~/.ssh/id_rsa" --exclude '.git/' --exclude '*.pem' ./ ubuntu@${{ secrets.EC2_IP }}:/var/www/html/
+        ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_IP }} "sudo systemctl restart apache2"

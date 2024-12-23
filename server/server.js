@@ -20,7 +20,7 @@ app.use(express.json()); // Parse JSON payloads
 app.use(require('morgan')('dev'));
 
 // Serve static files from the 'client' directory
-app.use(express.static(path.join(__dirname, 'client'))); // Change 'public' to 'client'
+app.use(express.static(path.join(__dirname, '..', 'client')));  // <-- Serve static files from the client folder
 
 // Serve the index.html for the root route
 app.get('/', (req, res) => {

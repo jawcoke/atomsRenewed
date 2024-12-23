@@ -1,42 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signup - Atoms Game Multiplayer</title>
-  <link rel="stylesheet" href="style/registrationStyle.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="centered-container">
-    <!-- Box 1 with the Form -->
-    <div class="box1">
-      <div class="form-box">
-        <form class="form">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup - Atoms Game Multiplayer</title>
+    <link rel="stylesheet" href="style/registrationStyle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Hide the login and signup box by default */
+      .loginBox {
+        display: none;
+      }
+      .signupBox {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="centered-container">
+      <!-- GUEST BOX  -->       <!-- GUEST BOX  -->      <!-- GUEST BOX  -->      <!-- GUEST BOX  -->
+      <div class="guestBox" id="guestBox">
+        <div class="form-box">
+          <form class="form">
             <span class="title">Guest</span>
             <div class="form-container">
-              <input type="text" class="input" placeholder="nick">
+              <input type="text" class="input" placeholder="nick" />
             </div>
-        </form>
-        <div class="form-section">
-          <p>have an account? <a href="login.html">log in</a> </p>
+          </form>
+          <div class="form-section">
+            <p>have an account? <a href="#" id="showLogin">log in</a></p>
+          </div>
         </div>
       </div>
+      <!-- GUEST BOX  -->       <!-- GUEST BOX  -->      <!-- GUEST BOX  -->      <!-- GUEST BOX  -->
+
+      
+
+      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->
+      <div class="loginBox" id="loginBox">
+        <div class="form-box">
+          <form class="form" action="login.php" method="POST">
+            <span class="title">Login</span>
+            <div class="form-container">
+              <input
+              type="text"
+              name="username"
+              class="input"
+              placeholder="Username"
+              required
+              />
+              <input
+              type="password"
+              name="password"
+              class="input"
+              placeholder="Password"
+              required
+              />
+            </div>
+            <a href="game-board.html" class="button">Run it</a>
+          </form>
+          <div class="form-section">
+            <p>
+              <a href="#" id="showSignup">Sign up</a>
+              <a href id="showGuest">Guest</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->
+      
+      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->
+      <div class="signupBox" id="signupBox">
+        <div class="form-box">
+          <form class="form" action="login.php" method="POST">
+            <span class="title">SignUp</span>
+            <div class="form-container">
+              <input
+                type="text"
+                name="username"
+                class="input"
+                placeholder="Username"
+                required
+                />
+                <input
+                type="text"
+                name="email"
+                class="input"
+                placeholder="Email"
+                required
+                />
+              <input
+                type="password"
+                name="password"
+                class="input"
+                placeholder="Password"
+                required
+                />
+              </div>
+              <a href="game-board.html" class="button">Sign in</a>
+            </form>
+            <div class="form-section">
+              <p>
+                <a href="#" id="showLogin2">Login In</a>
+              <a href id="showGuest">Guest</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->      <!-- SIGNUP BOX -->
+      
+      <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->
+      <div class="dashboardBox">
+        <h2>Dashboard</h2>
+        <!-- Empty Dashboard title -->
+        <ul class="server-list">
+          <li><a href="#">Server 1 Join</a></li>
+          <li><a href="#">Server 2 Join</a></li>
+          <li><a href="#">Server 3 Join</a></li>
+          <li><a href="#">Server 4 Join</a></li>
+          <li><a href="#">Server 5 Join</a></li>
+        </ul>
+      </div>
     </div>
+    <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->      <!-- DASHBOARD BOX -->
+    
+    <script>
+      // Add event listener to the "log in" link FOR guestBox
+      document
+        .getElementById("showLogin2")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("loginBox").style.display = "block"; // this shows the guest box
+          document.querySelector(".signupBox").style.display = "none";
+        });
 
-    <!-- Box 2 with an empty Dashboard title -->
-    <div class="box2">
-      <h2>Dashboard</h2> <!-- Empty Dashboard title -->
-      <ul class="server-list">
-        <li><a href="#">Server 1 Join</a></li>
-        <li><a href="#">Server 2 Join</a></li>
-        <li><a href="#">Server 3 Join</a></li>
-        <li><a href="#">Server 4 Join</a></li>
-        <li><a href="#">Server 5 Join</a></li>
-      </ul>
+      document
+        .getElementById("showLogin")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default link behavior
+          document.getElementById("loginBox").style.display = "block"; // Show the login box
+          document.querySelector(".guestBox").style.display = "none"; // Hide the signup box
+        });
 
-    </div>
-  </div>
-
-</body>
+      document
+        .getElementById("showSignup")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("signupBox").style.display = "block"; // this shows the signup box
+          document.querySelector(".loginBox").style.display = "none"; // hides the login box xD
+        });
+    </script>
+  </body>
 </html>

@@ -29,8 +29,31 @@ app.get('/', (req, res) => {
 
 // Serve a simple API route
 app.get('/api', (req, res) => {
-    res.json({ message: 'Atoms Backend is Running!' });
+    res.json({ message: 'Atoms Backend is Running! and FAST!!!' });
 });
+
+// Register
+app.post('/api/register', async (req, res) => {
+    const { name, username, email, password } = req.body;
+    console.log(`Registering user: ${name}, ${username}, ${email}`);
+  
+    try {
+      const db = client.db('TASKMANAGER_1');
+      const existingUser = await db.collection('users').findOne({ email });
+      if (existingUser) {
+        return res.status(409).json({ error: "Email already exists" });
+      }
+  
+      const newUser = { name, username, email, password };
+      await db.collection('users').insertOne(newUser);
+  
+      res.status(201).json({ message: "User registered successfully", newUser });
+    } catch (error) {
+      console.error("Error during registration:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
 
 // WebSocket connections
 io.on('connection', (socket) => {

@@ -17,6 +17,12 @@
       .signupBox {
         display: none;
       }
+      .userBox{
+        display: none;
+      }
+      .guestBox {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -36,7 +42,30 @@
         </div>
       </div>
       <!-- GUEST BOX  -->       <!-- GUEST BOX  -->      <!-- GUEST BOX  -->      <!-- GUEST BOX  -->
-
+      
+      <!-- USER BOX  -->       <!-- USER BOX  -->      <!-- USER BOX  -->      <!-- USER BOX  -->
+      <div class="userBox" id="userBox">
+        <div class="form-box">
+          <form class="form">
+            <span class="title">User!</span>
+          </form>
+            
+          <div class="form-section">
+            <p>Current level: 1</p>
+            <p>Global Rnk: N/A</p>
+            <p>Win Rate: 0%</p>
+            <p>XP: 0/10</p>
+          </div>
+            
+          <div class="form-section">
+            <p>Wins: 0</p>
+          </div>
+          <div class="form-section">
+            <p>Losses: 0</p>
+          </div>
+        </div>
+      </div>
+      <!-- USER BOX  -->       <!-- USER BOX  -->      <!-- USER BOX  -->      <!-- USER BOX  -->
       
 
       <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->      <!-- LOGIN BOX -->
@@ -60,7 +89,7 @@
               required
               />
             </div>
-            <a href="game-board.html" class="button">Run it</a>
+            <a href="#" id="showUserData" class="button">Run it</a>
           </form>
           <div class="form-section">
             <p>
@@ -152,6 +181,16 @@
           document.getElementById("signupBox").style.display = "block"; // this shows the signup box
           document.querySelector(".loginBox").style.display = "none"; // hides the login box xD
         });
+
+        document
+        .getElementById("showUserData")
+        .addEventListener("click", function(event) {
+          event.preventDefault();
+          document.getElementById("userBox").style.display = "block";
+          document.querySelector(".loginBox").style.display = "none";
+        });
+
+
     </script>
   </body>
 </html>

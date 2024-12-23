@@ -60,6 +60,18 @@ body {
   padding: 10px; /* Add padding inside the boxes */
 }
 
+.userBox {
+  width: 280px; /* Set width for both form boxes */
+  height: 100%; /* Make boxes take up the full height of the container */
+  background-color: #f1f7fe;
+  border: 2px solid #010101;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  align-items: center;
+  border-radius: 8px; /* Add a slight rounding to the corners */
+  padding: 10px; /* Add padding inside the boxes */
+}
+
 
 /* Box 2 (Dashboard) */
 .dashboardBox {

@@ -1,6 +1,4 @@
 const express = require("express");
-const mysql = require("mysql2/promise");
-require("dotenv").config();
 
 
 const app = express();
@@ -9,6 +7,8 @@ const port = 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
+const mysql = require("mysql2/promise");
+require("dotenv").config();
 // Database connection pool
 const db = mysql.createPool({
   connectionLimit: 100,

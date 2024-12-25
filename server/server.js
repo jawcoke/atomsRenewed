@@ -15,7 +15,7 @@ const io = new Server(server, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({origin: "*"}));
 app.use(express.json()); // Parse JSON payloads
 app.use(require('morgan')('dev'));
 

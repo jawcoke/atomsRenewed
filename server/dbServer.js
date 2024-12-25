@@ -6,6 +6,7 @@ const port = 3001;
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors({origin: "*"}));
 
 const mysql = require("mysql2/promise");
 require("dotenv").config();

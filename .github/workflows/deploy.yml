@@ -30,6 +30,7 @@ jobs:
             sudo npm install -g pm2
           fi
           # Restart PM2 processes
+          cd /server/
           pm2 stop all || true
           pm2 start server.js --name server1 --time
           pm2 start dbServer.js --name server2 --time

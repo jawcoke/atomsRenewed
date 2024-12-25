@@ -224,8 +224,9 @@
       document
         .getElementById("signupForm")
         .addEventListener("submit", async (event) => {
-          event.preventDefault(); // Prevent form from refreshing the page
+          event.preventDefault(); // Prevent the default form submission
 
+          // Collect form data
           const formData = new FormData(event.target);
           const data = {
             user: formData.get("user"),
@@ -234,22 +235,23 @@
           };
 
           try {
+            // Send AJAX request to the backend
             const response = await fetch("/users", {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                "Content-Type": "application/json",
+              },
               body: JSON.stringify(data),
             });
 
             if (response.ok) {
               const result = await response.json();
-              console.log(result.message);
-              alert("User created successfully!");
+              alert(`Success: ${result.message}`);
             } else {
-              console.error("Failed to create user");
-              alert("Error: Unable to create user");
+              alert("Error: Failed to create user");
             }
-          } catch (err) {
-            console.error(err);
+          } catch (error) {
+            console.error("Error:", error);
             alert("An error occurred while creating the user.");
           }
         });

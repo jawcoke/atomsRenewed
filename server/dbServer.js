@@ -68,7 +68,7 @@ app.post("/users", async (req, res) => {
 });
 
 // Read all users
-app.get("api/users", async (req, res) => {
+app.get("/api/users", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM userTable");
     res.status(200).json(rows);
@@ -81,7 +81,7 @@ app.get("api/users", async (req, res) => {
 
 
 // Read a single user by ID
-app.get("api/users/:id", async (req, res) => {
+app.get("/api/users/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -97,7 +97,7 @@ app.get("api/users/:id", async (req, res) => {
 });
 
 // Update a user by ID
-app.put("api/users/:id", async (req, res) => {
+app.put("/api/users/:id", async (req, res) => {
   const { id } = req.params;
   const { user, email, password } = req.body;
 
@@ -117,7 +117,7 @@ app.put("api/users/:id", async (req, res) => {
 });
 
 // Delete a user by ID
-app.delete("api/users/:id", async (req, res) => {
+app.delete("/api/users/:id", async (req, res) => {
   const { id } = req.params;
 
   try {

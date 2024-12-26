@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

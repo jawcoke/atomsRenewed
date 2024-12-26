@@ -123,6 +123,14 @@ body {
   margin: 1rem 0 0.5rem;
   width: 100%;
 }
+.signupForm {
+  font-family: "Press Start 2P", cursive;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #fff;
+  margin: 1rem 0 0.5rem;
+  width: 100%;
+}
 
 .input {
   background: none;

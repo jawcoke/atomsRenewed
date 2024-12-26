@@ -31,8 +31,30 @@ const db = mysql.createPool({
 })();
 
 
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: No token provided" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: "Invalid or expired token" });
+    }
+    req.user = user; // Attach user payload to request
+    next();
+  });
+};
+
+app.get("/api/protected-route", authenticateToken, (req, res) => {
+  res.status(200).json({ message: `Welcome ${req.user.user}`, data: "This is protected data" });
+});
+
+
 // Get userId by username
-app.get("/users/id/:user", async (req, res) => {
+app.get("/api/users/id/:user", async (req, res) => {
   const { user } = req.params;
 
   try {
@@ -49,10 +71,37 @@ app.get("/users/id/:user", async (req, res) => {
   }
 });
 
+app.post("/api/authenticate", async (req, res) => {
+  const { user, password } = req.body;
+
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM userTable WHERE user = ? AND password = ?",
+      [user, password]
+    );
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: "Invalid username or password" });
+    }
+
+    // Create a JWT payload
+    const payload = { userId: rows[0].userId, user: rows[0].user };
+
+    // Generate a token
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+
+    res.status(200).json({ token, message: "Login successful" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to authenticate user" });
+  }
+});
+
+
 // CRUD API Routes
 
 // Create a new user
-app.post("/users", async (req, res) => {
+app.post("/api/users", async (req, res) => {
   const { user, email, password } = req.body;
 
   try {

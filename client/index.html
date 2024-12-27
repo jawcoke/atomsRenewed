@@ -191,69 +191,40 @@
 
     <script>
       const API_BASE = "http://3.136.171.11:3000/api";
-      // Add event listener to the "log in" link FOR guestBox
-      document
-        .getElementById("showLogin2")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          document.getElementById("loginBox").style.display = "block";
-          document.querySelector(".signupBox").style.display = "none";
-        });
-      document
-        .getElementById("showGuest")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent default link behavior
-          document.getElementById("guestBox").style.display = "block";
-          document.querySelector(".loginBox").style.display = "none";
-        });
-      document
-        .getElementById("showGuestFromSignup")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent default link behavior
-          document.getElementById("guestBox").style.display = "block";
-          document.querySelector(".signupBox").style.display = "none";
-        });
-      document
-        .getElementById("showGuest")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent default link behavior
-          document.getElementById("guestBox").style.display = "block";
-          document.querySelector(".signupBox").style.display = "none";
-          document.querySelector(".loginBox").style.display = "none";
-        });
 
+      // Function to switch views
+      const showBox = (boxId) => {
+        document
+          .querySelectorAll(".guestBox, .loginBox, .signupBox, .userBox")
+          .forEach((box) => {
+            box.style.display = "none";
+          });
+        document.getElementById(boxId).style.display = "block";
+      };
+
+      // Show Login Box
       document
         .getElementById("showLogin")
-        .addEventListener("click", function (event) {
-          event.preventDefault(); // Prevent default link behavior
-          document.getElementById("loginBox").style.display = "block"; // Show the login box
-          document.querySelector(".guestBox").style.display = "none"; // Hide the signup box
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+          showBox("loginBox");
         });
 
+      // Show Signup Box
       document
         .getElementById("showSignup")
-        .addEventListener("click", function (event) {
+        .addEventListener("click", (event) => {
           event.preventDefault();
-          document.getElementById("signupBox").style.display = "block"; // this shows the signup box
-          document.querySelector(".loginBox").style.display = "none"; // hides the login box xD
+          showBox("signupBox");
         });
 
+      // Show Guest Box
       document
-        .getElementById("showUserData")
-        .addEventListener("click", function (event) {
+        .getElementById("showGuest")
+        .addEventListener("click", (event) => {
           event.preventDefault();
-          document.getElementById("userBox").style.display = "block";
-          document.getElementById("guestBox").style.display = "none";
-          document.querySelector("loginBox").style.display = "none";
+          showBox("guestBox");
         });
-
-      // document
-      //   .getElementById("runIt")
-      //   .addEventListener("click", function (event) {
-      //     event.preventDefault();
-      //     document.getElementById("userBox").style.display = "block";
-      //     document.querySelector(".loginBox").style.display = "none";
-      //   });
 
       // Handle signup
       document
@@ -304,8 +275,12 @@
             if (response.ok) {
               const result = await response.json();
               sessionStorage.setItem("token", result.token);
+
+              // Update username display
               document.getElementById("usernameDisplay").textContent =
                 data.user;
+
+              // Show the user dashboard
               showBox("userBox");
             } else {
               alert("Invalid username or password.");
@@ -319,8 +294,6 @@
       // Logout
       document.getElementById("logoutButton").addEventListener("click", () => {
         sessionStorage.removeItem("token");
-        document.getElementById("userBox").display.style = none;
-        document.getElementById("guestBox").display.style = block;
         showBox("guestBox");
       });
 

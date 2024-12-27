@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup - Atoms Game Multiplayer</title>
+  <link rel="stylesheet" href="style/registrationStyle.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div class="centered-container">
+    <!-- Guest Box -->
+    <div class="guestBox" id="guestBox">
+      <div class="form-box">
+        <form class="form">
+          <span class="title">Guest</span>
+          <div class="form-container">
+            <input type="text" class="input" placeholder="nick" />
+          </div>
+          <a href="#" id="showUserData" class="button">Run it</a>
+        </form>
+        <div class="form-section">
+          <p>Have an account? <a href="#" id="showLogin">Log in</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Box -->
+    <div class="userBox" id="userBox">
+      <div class="form-box">
+        <span class="title">User Dashboard</span>
+        <div class="form-section">
+          <p>Welcome, <span id="usernameDisplay"></span>!</p>
+        </div>
+        <div class="form-section">
+          <button class="button" id="logoutButton">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Box -->
+    <div class="loginBox" id="loginBox">
+      <div class="form-box">
+        <form class="form" id="loginForm">
+          <span class="title">Login</span>
+          <input type="text" name="user" class="input" placeholder="Username" required />
+          <input type="password" name="password" class="input" placeholder="Password" required />
+          <button type="submit" class="button">Log in</button>
+        </form>
+        <div class="form-section">
+          <p>
+            <a href="#" id="showSignup">Sign up</a>
+            <a href="#" id="showGuest">Guest</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Box -->
+    <div class="signupBox" id="signupBox">
+      <div class="form-box">
+        <form class="form" id="signupForm">
+          <span class="title">Sign Up</span>
+          <input type="text" name="user" class="input" placeholder="Username" required />
+          <input type="email" name="email" class="input" placeholder="Email" required />
+          <input type="password" name="password" class="input" placeholder="Password" required />
+          <button type="submit" class="button">Sign Up</button>
+        </form>
+        <div class="form-section">
+          <p>
+            <a href="#" id="showLogin2">Log in</a>
+            <a href="#" id="showGuest">Guest</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:3000/api";
+
+    // Toggle between views
+    const showBox = (boxId) => {
+      document.querySelectorAll(".guestBox, .userBox, .loginBox, .signupBox").forEach(box => {
+        box.style.display = "none";
+      });
+      document.getElementById(boxId).style.display = "block";
+    };
+
+    document.getElementById("showLogin").addEventListener("click", () => showBox("loginBox"));
+    document.getElementById("showSignup").addEventListener("click", () => showBox("signupBox"));
+    document.getElementById("showGuest").addEventListener("click", () => showBox("guestBox"));
+
+    // Handle signup
+    document.getElementById("signupForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = {
+        user: formData.get("user"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
+      try {
+        const response = await fetch(`${API_BASE}/users`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          alert("Signup successful! Please log in.");
+          showBox("loginBox");
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.message}`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Failed to sign up.");
+      }
+    });
+
+    // Handle login
+    document.getElementById("loginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = {
+        user: formData.get("user"),
+        password: formData.get("password"),
+      };
+      try {
+        const response = await fetch(`${API_BASE}/authenticate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          const result = await response.json();
+          sessionStorage.setItem("token", result.token);
+          document.getElementById("usernameDisplay").textContent = data.user;
+          showBox("userBox");
+        } else {
+          alert("Invalid username or password.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Login failed.");
+      }
+    });
+
+    // Logout
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      sessionStorage.removeItem("token");
+      showBox("guestBox");
+    });
+  </script>
+</body>
+</html>

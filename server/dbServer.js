@@ -3,9 +3,12 @@ const cors = require("cors");
 const app = express();
 const port = 3001;
 
+const bcrypt = require("bcrypt");
+const hashedPassword = await bcrypt.hash(password, 10);
+
 // Middleware to parse JSON
 app.use(express.json());
-app.use(cors({origin: "*"}));
+app.use(cors({ origin: "*" }));
 
 const mysql = require("mysql2/promise");
 require("dotenv").config();
@@ -80,9 +83,11 @@ app.post("/api/authenticate", async (req, res) => {
       [user, password]
     );
 
-    if (rows.length === 0) {
+    const isMatch = await bcrypt.compare(password, rows[0].password);
+    if (!isMatch) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
+
 
     // Create a JWT payload
     const payload = { userId: rows[0].userId, user: rows[0].user };
@@ -185,3 +190,42 @@ app.delete("/api/users/:id", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server started on port ${port}...`);
 });
+
+
+
+
+
+
+      // Add event listener to the "log in" link FOR guestBox
+      document
+        .getElementById("showLogin2")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("loginBox").style.display = "block"; // this shows the guest box
+          document.querySelector(".signupBox").style.display = "none";
+        });
+
+      document
+        .getElementById("showLogin")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default link behavior
+          document.getElementById("loginBox").style.display = "block"; // Show the login box
+          document.querySelector(".guestBox").style.display = "none"; // Hide the signup box
+        });
+
+      document
+        .getElementById("showSignup")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("signupBox").style.display = "block"; // this shows the signup box
+          document.querySelector(".loginBox").style.display = "none"; // hides the login box xD
+        });
+
+      document
+        .getElementById("showUserData")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          document.getElementById("userBox").style.display = "block";
+          document.getElementById("guestBox").style.display = "none";
+          document.querySelector("loginBox").style.display = "none";
+        });

@@ -277,6 +277,7 @@
         .getElementById("loginForm")
         .addEventListener("submit", async (event) => {
           event.preventDefault();
+          console.log("Login form submitted"); // Debugging line
           const formData = new FormData(event.target);
           const data = {
             user: formData.get("user"),

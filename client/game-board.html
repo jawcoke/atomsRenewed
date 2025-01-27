@@ -1,25 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atoms Game Board</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  
-  <!-- Adjust the path for game-board.js -->
-  <script src="js/game-board.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atoms Game Board</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
-  <link rel="stylesheet" href="style/registrationStyle.css">
-</head>
-<body>
-  <div id="game-container">
-    <h1>Atoms Game</h1>
-    <!-- Game grid and logic will be rendered here using p5.js -->
-    <div id="game-canvas"></div>
-  </div>
+    <!-- Adjust the path for game-board.js -->
+    <script src="js/game-board.js"></script>
 
-  <!-- Ensure the game-board.js file is loaded -->
-  <script src="js/game-board.js"></script>
-</body>
+    <link rel="stylesheet" href="style/registrationStyle.css" />
+  </head>
+  <body>
+    <div id="game-container">
+      <h1>Atoms Game</h1>
+      <!-- Game grid and logic will be rendered here using p5.js -->
+      <div id="game-canvas"></div>
+    </div>
+
+    <!-- Ensure the game-board.js file is loaded -->
+    <script src="js/game-board.js"></script>
+
+    <script>
+      let wins = 0; // Safe initialization
+      let losses = 0; // Safe initialization
+
+      // Simulated game outcome handler
+      function onGameEnd(outcome) {
+        // 'outcome' can be 'win' or 'loss'
+        if (outcome === "win") {
+          wins++;
+        } else if (outcome === "loss") {
+          losses++;
+        }
+
+        // Update stats in the UI
+        updateStats();
+
+        // For logged-in users, send the update to the backend
+        if (!isGuest) {
+          fetch(`${API_BASE}/updateStats`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: sessionStorage.getItem("token"),
+              wins,
+              losses,
+            }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                console.error("Failed to update stats on the server.");
+              }
+            })
+            .catch((err) => console.error("Error while updating stats:", err));
+        }
+      }
+    </script>
+  </body>
 </html>

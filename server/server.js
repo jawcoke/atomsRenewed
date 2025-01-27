@@ -179,6 +179,35 @@ app.delete("/api/users/:id", async (req, res) => {
   }
 });
 
+app.post("/api/updateWins", authenticateToken, async (req, res) => {
+  const { userId } = req.user;
+  try {
+    const [result] = await db.query("UPDATE userTable SET wins = wins + 1 WHERE userId = ?", [userId]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ message: "Win added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add win" });
+  }
+});
+
+app.post("/api/updateLosses", authenticateToken, async (req, res) => {
+  const { userId } = req.user;
+  try {
+    const [result] = await db.query("UPDATE userTable SET losses = losses + 1 WHERE userId = ?", [userId]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ message: "Loss added successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add loss" });
+  }
+});
+
+
 // WebSocket Events
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);

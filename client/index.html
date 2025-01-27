@@ -11,12 +11,8 @@
     />
     <style>
       /* Hide the login and signup box by default */
-      .loginBox {
-        display: none;
-      }
-      .signupBox {
-        display: none;
-      }
+      .loginBox,
+      .signupBox,
       .userBox {
         display: none;
       }
@@ -57,23 +53,21 @@
       <div class="userBox" id="userBox">
         <div class="form-box">
           <form class="form">
-            <span class="title">User!</span>
+            <!-- <span class="title">Welcome,</span> -->
+            <div id="usernameDisplay"></div>
           </form>
 
-          <div class="form-section">
-            <p>Current level: 1</p>
-            <p>Global Rnk: N/A</p>
-            <p>Win Rate: 0%</p>
-            <p>XP: 0/10</p>
-          </div>
-
-          <div class="form-section">
+          <div class="form-section" id="statsSection">
             <p>Wins: 0</p>
-          </div>
-          <div class="form-section">
             <p>Losses: 0</p>
           </div>
-          <div class="form-section">
+
+          <!-- <div class="form-section">
+            <button class="button" id="addWin">Add Win</button>
+            <button class="button" id="addLoss">Add Loss</button>
+          </div> -->
+
+          <div class="form-section" id="guestSessionSection">
             <p>*Guest Session*</p>
           </div>
           <div class="form-section">
@@ -242,6 +236,29 @@
           showBox("guestBox");
         });
 
+      // Guest mode
+      document
+        .getElementById("showUserData")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          // Set guest mode
+          isGuest = true;
+
+          // Hide stats section (user data)
+          const statsSection = document.getElementById("statsSection");
+          if (statsSection) statsSection.style.display = "none";
+
+          // Show guest session section
+          const guestSessionSection = document.getElementById(
+            "guestSessionSection"
+          );
+          if (guestSessionSection) guestSessionSection.style.display = "block";
+
+          // Show the user dashboard (or guest dashboard)
+          showBox("userBox");
+        });
+
       // Handle signup
       document
         .getElementById("signupForm")
@@ -297,21 +314,9 @@
 
             if (response.ok) {
               const result = await response.json();
-              console.log("Login successful:", result);
-
               sessionStorage.setItem("token", result.token);
-
-              // Update the username display
-              const usernameDisplay =
-                document.getElementById("usernameDisplay");
-              if (usernameDisplay) {
-                usernameDisplay.textContent = data.user;
-              } else {
-                console.error("usernameDisplay element not found");
-              }
-
-              // Show the user dashboard
-              showBox("userBox");
+              sessionStorage.setItem("user", data.user);
+              window.location.href = "dashboard.html"; // Redirect to the new page
             } else {
               const error = await response.json();
               console.error("Login failed:", error);
@@ -326,7 +331,76 @@
       // Logout
       document.getElementById("logoutButton").addEventListener("click", () => {
         sessionStorage.removeItem("token");
+        isGuest = true; // Switch to guest mode
+
+        // Hide stats section
+        document.getElementById("statsSection").style.display = "none";
+
+        // Show guest session section
+        document.getElementById("guestSessionSection").style.display = "block";
+
+        // Switch back to guest box
         showBox("guestBox");
+      });
+
+      window.addEventListener("load", () => {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+          // Logged-in user
+          isGuest = false;
+
+          // Show stats section
+          document.getElementById("statsSection").style.display = "block";
+
+          // Hide guest session section
+          document.getElementById("guestSessionSection").style.display = "none";
+
+          // Show user box
+          showBox("userBox");
+        } else {
+          // Guest user
+          isGuest = true;
+
+          // Hide stats section
+          document.getElementById("statsSection").style.display = "none";
+
+          // Show guest session section
+          document.getElementById("guestSessionSection").style.display =
+            "block";
+
+          // Show guest box
+          showBox("guestBox");
+        }
+      });
+
+      document.getElementById("addWin").addEventListener("click", () => {
+        wins++;
+        updateStats();
+        if (!isGuest) {
+          fetch(`${API_BASE}/updateWins`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: sessionStorage.getItem("token"),
+              wins,
+            }),
+          });
+        }
+      });
+
+      document.getElementById("addLoss").addEventListener("click", () => {
+        losses++;
+        updateStats();
+        if (!isGuest) {
+          fetch(`${API_BASE}/updateLosses`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              token: sessionStorage.getItem("token"),
+              losses,
+            }),
+          });
+        }
       });
     </script>
   </body>

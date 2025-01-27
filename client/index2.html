@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup - Atoms Game Multiplayer</title>
+    <link rel="stylesheet" href="style/registrationStyle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style></style>
+  </head>
+  <body>
+    <div class="centered-container">
+      <div class="loginBox" id="loginBox">
+        <div class="form-box">
+          <form class="form" id="loginForm">
+            <span class="title">Login</span>    
+            <input
+              type="text"
+              name="user"
+              class="input"
+              placeholder="Username"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              class="input"
+              placeholder="Password"
+              required
+            />
+            <button type="submit" id="runIt" class="button">Run it</button>
+          </form>
+          <div class="form-section">
+            <p>
+              <a href="#" id="showSignup">Sign up</a>
+              <a href="#" id="showGuest">Guest</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboardBox">
+        <h2>Dashboard</h2>
+        <!-- Empty Dashboard title -->
+        <ul class="server-list">
+          <li><a href="#">Server 1 Join</a></li>
+          <li><a href="#">Server 2 Join</a></li>
+          <li><a href="#">Server 3 Join</a></li>
+          <li><a href="#">Server 4 Join</a></li>
+          <li><a href="#">Server 5 Join</a></li>
+        </ul>
+      </div>
+    </div>  
+
+  </body>
+</html>

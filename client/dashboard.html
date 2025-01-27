@@ -26,6 +26,7 @@
     <p id="stats"></p>
     <button id="addWin">Add Win</button>
     <button id="addLoss">Add Loss</button>
+    <button id="logout">Log Out</button>
     <script>
       const API_BASE = "http://3.136.171.11:3000/api";
       const token = sessionStorage.getItem("token");
@@ -82,6 +83,13 @@
         } catch (err) {
           console.error("Error:", err);
         }
+      });
+
+      document.getElementById("logout").addEventListener("click", async () => {
+        sessionStorage.removeItem("token");
+        window.location.href = "index.html";
+
+        // i think this is enough ?  for a logout
       });
 
       updateStats();

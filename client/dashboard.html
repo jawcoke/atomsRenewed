@@ -37,15 +37,28 @@
         window.location.href = "index.html";
       }
 
-      document.getElementById("welcomeMessage").textContent = `Welcome, ${user}`;
+      document.getElementById(
+        "welcomeMessage"
+      ).textContent = `Welcome, ${user}`;
 
       const updateStats = async () => {
+        const token = sessionStorage.getItem("token"); // Retrieve the token
+        const user = sessionStorage.getItem("user"); // Retrieve the username or user ID
+
         try {
           const response = await fetch(`${API_BASE}/users/${user}`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` }, // Pass the token in the header
           });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user stats");
+          }
+
           const data = await response.json();
-          document.getElementById("stats").textContent = `Wins: ${data.wins}, Losses: ${data.losses}`;
+          // Update the stats on the page
+          document.getElementById(
+            "stats"
+          ).textContent = `Wins: ${data.wins}, Losses: ${data.losses}`;
         } catch (err) {
           console.error("Failed to fetch user stats:", err);
         }

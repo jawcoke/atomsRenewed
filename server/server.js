@@ -164,20 +164,20 @@ app.put("/api/users/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/users/:id", async (req, res) => {
+app.get("/api/users/:id", async (req, res) => {
   const { id } = req.params;
-
   try {
-    const [result] = await db.query("DELETE FROM userTable WHERE userId = ?", [id]);
-    if (result.affectedRows === 0) {
+    const [rows] = await db.query("SELECT * FROM userTable WHERE userId = ?", [id]);
+    if (rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json(rows[0]); // Ensure `wins` and `losses` are included in the response
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to delete user" });
+    res.status(500).json({ error: "Failed to fetch user" });
   }
 });
+
 
 app.post("/api/updateWins", authenticateToken, async (req, res) => {
   const { userId } = req.user;

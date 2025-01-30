@@ -143,6 +143,7 @@
               const result = await response.json();
               sessionStorage.setItem("token", result.token);
               sessionStorage.setItem("user", data.user);
+              sessionStorage.setItem("userId", data.userId);
               window.location.href = "dashboard.html"; // Redirect to the new page
             } else {
               const error = await response.json();

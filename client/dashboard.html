@@ -31,6 +31,7 @@
       const API_BASE = "http://3.136.171.11:3000/api";
       const token = sessionStorage.getItem("token");
       const user = sessionStorage.getItem("user");
+      const userId = sessionStorage.getItem("userId");
 
       if (!token) {
         alert("Unauthorized! Redirecting to login...");
@@ -44,7 +45,7 @@
       const updateStats = async () => {
         console.log("Fetching stats for user:", user);
         try {
-          const response = await fetch(`${API_BASE}/users/${user}/stats`, {
+          const response = await fetch(`${API_BASE}/users/${userId}/stats`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

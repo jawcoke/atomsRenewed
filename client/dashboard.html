@@ -42,12 +42,12 @@
       ).textContent = `Welcome, ${user}`;
 
       const updateStats = async () => {
-        const token = sessionStorage.getItem("token"); // Retrieve the token
-        const user = sessionStorage.getItem("user"); // Retrieve the username or user ID
-
+        console.log("Fetching stats for user:", user);
         try {
-          const response = await fetch(`${API_BASE}/users/${user}`, {
-            headers: { Authorization: `Bearer ${token}` }, // Pass the token in the header
+          const response = await fetch(`${API_BASE}/users/${user}/stats`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           });
 
           if (!response.ok) {
@@ -55,57 +55,74 @@
           }
 
           const data = await response.json();
-          // Update the stats on the page
+          console.log("Fetched stats:", data);
+
           document.getElementById(
             "stats"
           ).textContent = `Wins: ${data.wins}, Losses: ${data.losses}`;
         } catch (err) {
-          console.error("Failed to fetch user stats:", err);
+          console.error("Error fetching stats:", err);
         }
       };
 
       document.getElementById("addWin").addEventListener("click", async () => {
+        console.log("Adding win...");
         try {
           const response = await fetch(`${API_BASE}/updateWins`, {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           });
-          if (response.ok) {
-            alert("Win added!");
-            updateStats();
-            console.log(data.wins);
-          } else {
-            alert("Failed to add win.");
+
+          if (!response.ok) {
+            throw new Error("Failed to add win.");
           }
+
+          const data = await response.json();
+          console.log("Win added:", data);
+
+          alert("Win added!");
+          updateStats();
         } catch (err) {
-          console.error("Error:", err);
+          console.error("Error adding win:", err);
         }
       });
 
       document.getElementById("addLoss").addEventListener("click", async () => {
+        console.log("Adding loss...");
         try {
           const response = await fetch(`${API_BASE}/updateLosses`, {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           });
-          if (response.ok) {
-            alert("Loss added!");
-            updateStats();
-          } else {
-            alert("Failed to add loss.");
+
+          if (!response.ok) {
+            throw new Error("Failed to add loss.");
           }
+
+          const data = await response.json();
+          console.log("Loss added:", data);
+
+          alert("Loss added!");
+          updateStats();
         } catch (err) {
-          console.error("Error:", err);
+          console.error("Error adding loss:", err);
         }
       });
 
-      document.getElementById("logout").addEventListener("click", async () => {
-        sessionStorage.removeItem("token");
-        window.location.href = "index.html";
-
-        // i think this is enough ?  for a logout
+      document.getElementById("logout").addEventListener("click", () => {
+        if (confirm("Are you sure you want to log out?")) {
+          sessionStorage.removeItem("token");
+          window.location.href = "index.html";
+        }
       });
 
+      // Initial stats load
       updateStats();
     </script>
   </body>

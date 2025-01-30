@@ -207,6 +207,24 @@ app.post("/api/updateLosses", authenticateToken, async (req, res) => {
   }
 });
 
+// Return wins and losses
+
+app.get("/api/users/:id/stats", authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query("SELECT wins, losses FROM userTable WHERE userId = ?", [id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(rows[0]); // Returns { wins: X, losses: Y }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch user stats" });
+  }
+});
+
+
 
 // WebSocket Events
 io.on("connection", (socket) => {
